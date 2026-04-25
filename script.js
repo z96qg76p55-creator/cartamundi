@@ -24,9 +24,9 @@ function initSplashCursor() {
   // ── config ────────────────────────────────────────────
   const DENSITY_DISSIPATION  = 3.5;
   const VELOCITY_DISSIPATION = 2.0;
-  const PRESSURE             = 0.1;
+  const PRESSURE_VALUE       = 0.1;
   const PRESSURE_ITERATIONS  = 20;
-  const CURL                 = 3;
+  const CURL_STRENGTH        = 3;
   const SPLAT_RADIUS         = 0.25;
   const SPLAT_FORCE          = 6000;
   const COLOR_UPDATE_SPEED   = 10;
@@ -341,7 +341,7 @@ function initSplashCursor() {
     gl.uniform2f(VORTICITY.u.texelSize, velocity.tsx, velocity.tsy);
     gl.uniform1i(VORTICITY.u.uVelocity, velocity.read.attach(0));
     gl.uniform1i(VORTICITY.u.uCurl,     curlFBO.attach(1));
-    gl.uniform1f(VORTICITY.u.curl, CURL); gl.uniform1f(VORTICITY.u.dt, dt);
+    gl.uniform1f(VORTICITY.u.curl, CURL_STRENGTH); gl.uniform1f(VORTICITY.u.dt, dt);
     blit(velocity.write); velocity.swap();
 
     // divergence
@@ -353,7 +353,7 @@ function initSplashCursor() {
     // clear pressure
     gl.useProgram(CLEAR.p);
     gl.uniform1i(CLEAR.u.uTexture, pressure.read.attach(0));
-    gl.uniform1f(CLEAR.u.value, PRESSURE);
+    gl.uniform1f(CLEAR.u.value, PRESSURE_VALUE);
     blit(pressure.write); pressure.swap();
 
     // pressure solve
