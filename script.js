@@ -4,6 +4,7 @@
 
 window.addEventListener('load', () => {
   gsap.registerPlugin(ScrollTrigger);
+  initStarfield();
   initLanding();
   initNav();
   initAccordions();
@@ -11,6 +12,122 @@ window.addEventListener('load', () => {
   initReveal();
   initCounters();
 });
+
+// ─── CANVAS STARFIELD ────────────────────────────────────
+function initStarfield() {
+  const canvas = document.getElementById('starfield');
+  const ctx    = canvas.getContext('2d');
+
+  let W, H, stars;
+  let mouse   = { x: -9999, y: -9999 };
+  let scrollY = 0;
+  const CURSOR_RADIUS   = 120;
+  const CURSOR_STRENGTH = 0.28;
+  const STAR_COUNT      = 320;
+  const PARALLAX_FACTOR = 0.25;
+
+  // Star colours — mostly white/blue-white, hints of warm
+  const COLORS = [
+    'rgba(255,255,255,',
+    'rgba(200,220,255,',
+    'rgba(255,240,200,',
+    'rgba(180,210,255,',
+  ];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeStar() {
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    return {
+      ox:       Math.random() * W,   // origin x
+      oy:       Math.random() * H,   // origin y
+      x:        0,
+      y:        0,
+      r:        Math.random() * 1.4 + 0.3,
+      alpha:    Math.random() * 0.6 + 0.3,
+      twinkle:  Math.random() * Math.PI * 2,
+      speed:    Math.random() * 0.008 + 0.003,
+      color,
+      vx: 0,   // cursor velocity
+      vy: 0,
+    };
+  }
+
+  function init() {
+    resize();
+    stars = Array.from({ length: STAR_COUNT }, makeStar);
+    stars.forEach(s => { s.x = s.ox; s.y = s.oy; });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const parallaxOffset = scrollY * PARALLAX_FACTOR;
+
+    stars.forEach(s => {
+      // twinkle
+      s.twinkle += s.speed;
+      const tw = 0.5 + 0.5 * Math.sin(s.twinkle);
+      const a  = s.alpha * (0.6 + 0.4 * tw);
+
+      // cursor attraction
+      const dx   = mouse.x - s.x;
+      const dy   = mouse.y - s.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < CURSOR_RADIUS) {
+        const force = (1 - dist / CURSOR_RADIUS) * CURSOR_STRENGTH;
+        s.vx += dx * force * 0.06;
+        s.vy += dy * force * 0.06;
+      }
+
+      // dampen velocity — drift back to origin
+      s.vx *= 0.88;
+      s.vy *= 0.88;
+      s.x  += s.vx;
+      s.y  += s.vy;
+
+      // parallax: stars shift upward slightly as you scroll
+      const drawY = s.y - parallaxOffset % H;
+
+      // draw star
+      const grd = ctx.createRadialGradient(s.x, drawY, 0, s.x, drawY, s.r * 2.5);
+      grd.addColorStop(0, s.color + a + ')');
+      grd.addColorStop(1, s.color + '0)');
+
+      ctx.beginPath();
+      ctx.arc(s.x, drawY, s.r * (1 + 0.3 * tw), 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      // bright stars get a cross-hair gleam
+      if (s.r > 1.2) {
+        ctx.strokeStyle = s.color + (a * 0.3) + ')';
+        ctx.lineWidth   = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x - s.r * 4, drawY);
+        ctx.lineTo(s.x + s.r * 4, drawY);
+        ctx.moveTo(s.x, drawY - s.r * 4);
+        ctx.lineTo(s.x, drawY + s.r * 4);
+        ctx.stroke();
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  // events
+  window.addEventListener('resize', () => { resize(); stars.forEach(s => { s.ox = Math.random() * W; s.oy = Math.random() * H; s.x = s.ox; s.y = s.oy; }); });
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  init();
+  draw();
+}
 
 // ─── LANDING ANIMATION ───────────────────────────────────
 function initLanding() {
