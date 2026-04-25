@@ -12,6 +12,7 @@ window.addEventListener('load', () => {
   initTimeline();
   initReveal();
   initCounters();
+  initLiquidGlass();
 });
 
 // ─── SPLASH CURSOR — WebGL Fluid Simulation ──────────────
@@ -720,4 +721,29 @@ function animateCount(id, target, suffix) {
     if (progress < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
+}
+
+// ─── LIQUID GLASS NAV ─────────────────────────────────────
+function initLiquidGlass() {
+  if (typeof Container === 'undefined' || typeof html2canvas === 'undefined') return;
+
+  const navInner = document.querySelector('#main-nav .nav-inner');
+  if (!navInner) return;
+
+  // Create a pill-shaped liquid glass container
+  const container = new Container({ type: 'pill', tintOpacity: 0.12 });
+
+  // Preserve nav-inner layout/style classes on the new element
+  container.element.classList.add('nav-inner', 'glass-pill');
+
+  // Move nav links & dots into the container
+  while (navInner.firstChild) {
+    container.element.appendChild(navInner.firstChild);
+  }
+
+  // Swap into DOM
+  navInner.parentNode.replaceChild(container.element, navInner);
+
+  // Force size recalculation after DOM insertion
+  requestAnimationFrame(() => container.updateSizeFromDOM());
 }
