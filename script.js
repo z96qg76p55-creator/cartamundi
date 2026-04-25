@@ -671,16 +671,25 @@ function initTimeline() {
 
 // ─── SCROLL REVEAL ───────────────────────────────────────
 function initReveal() {
-  const observer = new IntersectionObserver(
-    entries => entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
+  const els = document.querySelectorAll('.reveal');
+
+  function check() {
+    els.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.92) {
+        el.classList.add('visible');
       }
-    }),
-    { threshold: 0.12 }
-  );
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+  }
+
+  // fire on scroll + resize
+  window.addEventListener('scroll', check, { passive: true });
+  window.addEventListener('resize', check);
+
+  // also run immediately and after GSAP pin settles
+  check();
+  setTimeout(check, 800);
+  setTimeout(check, 2000);
 }
 
 // ─── STAT COUNTERS ────────────────────────────────────────
