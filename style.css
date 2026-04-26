@@ -198,6 +198,7 @@ button { font-family: inherit; }
   justify-content: center;
 }
 
+#card-stack,
 #card-fan {
   width: clamp(560px, 80vw, 1100px);
   height: auto;
@@ -205,6 +206,12 @@ button { font-family: inherit; }
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+}
+#card-fan {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Base card */

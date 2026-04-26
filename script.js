@@ -536,19 +536,26 @@ function initLanding() {
     }
   });
 
-  // Start: image slightly smaller and invisible, rises and sharpens into view
-  gsap.set('#card-fan', { scale: 0.82, opacity: 0, y: 40 });
+  // card-stack rises in; card-fan hidden until crossfade
+  gsap.set('#card-stack', { scale: 0.82, opacity: 0, y: 40 });
+  gsap.set('#card-fan',   { opacity: 0 });
 
   tl
-    .to('#card-fan',        { scale: 1, opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0)
+    // Rise in with the stack state
+    .to('#card-stack',       { scale: 1, opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0)
     .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0.2)
-    .to('#text-1',          { opacity: 1, y: 0, duration: 0.5 }, 1.4)
-    .to('#text-1',          { opacity: 0, y: -24, duration: 0.4 }, 2.3)
-    .to('#text-2',          { opacity: 1, y: 0, duration: 0.5 }, 2.7)
-    .to('#text-2',          { opacity: 0, y: -24, duration: 0.4 }, 3.6)
-    .to('#card-fan',        { y: -120, scale: 1.06, opacity: 0, duration: 0.9 }, 3.65)
-    .to('#landing-logo',    { opacity: 1, duration: 0.9 }, 4.2)
-    .to({},                 { duration: 0.6 }, 5.0);
+    // Crossfade: stack → fan (the "fanning out" moment)
+    .to('#card-stack',       { opacity: 0, scale: 0.96, duration: 0.7 }, 1.1)
+    .to('#card-fan',         { opacity: 1, duration: 0.7 }, 1.1)
+    // Hero texts
+    .to('#text-1',           { opacity: 1, y: 0, duration: 0.5 }, 1.6)
+    .to('#text-1',           { opacity: 0, y: -24, duration: 0.4 }, 2.5)
+    .to('#text-2',           { opacity: 1, y: 0, duration: 0.5 }, 2.9)
+    .to('#text-2',           { opacity: 0, y: -24, duration: 0.4 }, 3.8)
+    // Cards fly out, logo appears
+    .to('#card-fan',         { y: -120, scale: 1.06, opacity: 0, duration: 0.9 }, 3.85)
+    .to('#landing-logo',     { opacity: 1, duration: 0.9 }, 4.3)
+    .to({},                  { duration: 0.6 }, 5.0);
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────
