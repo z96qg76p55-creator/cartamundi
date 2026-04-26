@@ -536,30 +536,34 @@ function initLanding() {
     }
   });
 
-  // card-stack: starts small + invisible, rises into view
-  // card-fan:   waits hidden, then fades+scales in as "fan spreads"
-  gsap.set('#card-stack', { scale: 0.78, opacity: 0, y: 60 });
-  gsap.set('#card-fan',   { opacity: 0, scale: 0.90 });
+  gsap.set(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 0, y: 40 });
 
   tl
-    // ── Phase 1: stack rises in (cinematic reveal) ──
-    .to('#card-stack',       { scale: 1, opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 0)
-    .to('#scroll-indicator', { opacity: 0, duration: 0.4 }, 0.3)
+    // Phase 1: cards rise in as a tight stack
+    .to(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, 0)
+    .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
 
-    // ── Phase 2: crossfade — stack fades, fan spreads outward ──
-    .to('#card-stack',       { opacity: 0, scale: 1.04, duration: 0.8, ease: 'power2.inOut' }, 1.2)
-    .to('#card-fan',         { opacity: 1, scale: 1,    duration: 0.8, ease: 'power2.out'  }, 1.2)
+    // Phase 2: fan out
+    .to('#card-1', { rotation: -44, x: -310, y: 35, scale: 0.93, duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-2', { rotation: -22, x: -155, y: 14, duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-3', { y: -28, scale: 1.07, duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-4', { rotation: 22,  x: 155,  y: 14, duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-5', { rotation: 44,  x: 310,  y: 35, scale: 0.93, duration: 1, ease: 'power2.inOut' }, 0.8)
 
-    // ── Phase 3: hero texts ──
-    .to('#text-1',           { opacity: 1, y: 0,   duration: 0.55, ease: 'power2.out' }, 1.9)
-    .to('#text-1',           { opacity: 0, y: -28, duration: 0.4 }, 2.9)
-    .to('#text-2',           { opacity: 1, y: 0,   duration: 0.55, ease: 'power2.out' }, 3.1)
-    .to('#text-2',           { opacity: 0, y: -28, duration: 0.4 }, 4.0)
+    // Phase 3: hero texts
+    .to('#text-1', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 2.1)
+    .to('#text-1', { opacity: 0, y: -24, duration: 0.4 }, 3.0)
+    .to('#text-2', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 3.3)
+    .to('#text-2', { opacity: 0, y: -24, duration: 0.4 }, 4.1)
 
-    // ── Phase 4: cards float up and out, logo reveals ──
-    .to('#card-fan',         { y: -140, scale: 1.08, opacity: 0, duration: 1.0, ease: 'power2.in' }, 4.05)
-    .to('#landing-logo',     { opacity: 1, duration: 1.0, ease: 'power2.out' }, 4.5)
-    .to({},                  { duration: 0.5 }, 5.0);
+    // Phase 4: cards fly off, logo appears
+    .to('#card-1', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
+    .to('#card-5', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
+    .to('#card-2', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
+    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
+    .to('#card-3', { y: -1000, opacity: 0, duration: 0.8, ease: 'power2.in' }, 4.15)
+    .to('#landing-logo', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 4.8)
+    .to({}, { duration: 0.6 }, 5.4);
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────
