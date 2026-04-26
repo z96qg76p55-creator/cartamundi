@@ -536,20 +536,23 @@ function initLanding() {
     }
   });
 
-  gsap.set(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 0, y: 40 });
+  gsap.set(['#card-1','#card-2','#card-3','#card-4'], { opacity: 0, y: 40 });
   gsap.set('#landing-glow-bg', { opacity: 0 });
 
   tl
     // Phase 1: cards rise in as a tight stack
-    .to(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, 0)
+    .to(['#card-1','#card-2','#card-3','#card-4'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, 0)
     .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
 
-    // Phase 2: fan out + ambient glow fades in + depth of field
-    .to('#card-1', { rotation: -44, x: -310, y: 35, scale: 0.93, filter: 'blur(2.5px) brightness(0.72) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-2', { rotation: -22, x: -155, y: 14, filter: 'blur(1px) brightness(0.82) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-3', { y: -28, scale: 1.07, filter: 'brightness(1.06) drop-shadow(0 28px 56px rgba(0,0,0,0.95))', duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-4', { rotation: 22, x: 155, y: 14, filter: 'blur(1px) brightness(0.82) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-5', { rotation: 44, x: 310, y: 35, scale: 0.93, filter: 'blur(2.5px) brightness(0.72) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
+    // Phase 2: 4-card fan + ambient glow + depth of field
+    // card-1 Magician: far left, most blurred
+    .to('#card-1', { rotation: -42, x: -265, y: 30, scale: 0.90, filter: 'blur(2.5px) brightness(0.70) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
+    // card-2 Pikachu: left-center, slightly elevated — the star
+    .to('#card-2', { rotation: -14, x: -90, y: -30, scale: 1.08, filter: 'brightness(1.08) drop-shadow(0 30px 60px rgba(0,0,0,0.95))', duration: 1, ease: 'power2.inOut' }, 0.8)
+    // card-3 King: right-center, slight blur
+    .to('#card-3', { rotation: 14, x: 90, y: 10, scale: 0.95, filter: 'blur(0.8px) brightness(0.84) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
+    // card-4 Joker: far right, most blurred
+    .to('#card-4', { rotation: 42, x: 265, y: 30, scale: 0.90, filter: 'blur(2.5px) brightness(0.70) drop-shadow(0 22px 48px rgba(0,0,0,0.9))', duration: 1, ease: 'power2.inOut' }, 0.8)
     .to('#landing-glow-bg', { opacity: 1, duration: 1, ease: 'power2.out' }, 0.9)
 
     // Phase 3: hero texts
@@ -561,10 +564,9 @@ function initLanding() {
     // Phase 4: cards fly off, glow fades, logo appears
     .to('#landing-glow-bg', { opacity: 0, duration: 0.5 }, 4.0)
     .to('#card-1', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
-    .to('#card-5', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
-    .to('#card-2', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
-    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
-    .to('#card-3', { y: -1000, opacity: 0, duration: 0.8, ease: 'power2.in' }, 4.15)
+    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
+    .to('#card-3', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
+    .to('#card-2', { y: -1000, opacity: 0, duration: 0.8, ease: 'power2.in' }, 4.15)
     .to('#landing-logo', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 4.8)
     .to({}, { duration: 0.6 }, 5.4);
 }
