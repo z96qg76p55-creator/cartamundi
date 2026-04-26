@@ -547,11 +547,11 @@ function initLanding() {
     .to(['#card-1','#card-2','#card-3','#card-4'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.05 }, 0)
     .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
 
-    // Phase 2: 4-card fan — outer cards angled, inner pair prominent, no blur
-    .to('#card-1', { rotation: -46, x: -290, y: 34, scale: 0.91, filter: `brightness(0.82) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-2', { rotation: -15, x: -95,  y:  8, scale: 1.00, filter: `brightness(0.95) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-3', { rotation:  15, x:  95,  y:  8, scale: 1.00, filter: `brightness(0.95) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-4', { rotation:  46, x:  290, y: 34, scale: 0.91, filter: `brightness(0.82) ${shadowBig}`, duration: 1, ease: 'power2.inOut' }, 0.8)
+    // Phase 2: fan — Pikachu center hero (last in DOM = always on top)
+    .to('#card-1', { rotation: -48, x: -295, y: 32, scale: 0.89, filter: `brightness(0.80) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-2', { rotation: -16, x: -105, y: 10, scale: 0.96, filter: `brightness(0.90) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-3', { rotation:  32, x:  215, y: 26, scale: 0.92, filter: `brightness(0.85) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-4', { rotation:   0, x:    0, y: -22, scale: 1.07, filter: `brightness(1.05) ${shadowBig}`, duration: 1, ease: 'power2.inOut' }, 0.8)
     .to('#landing-glow-bg', { opacity: 1, duration: 1, ease: 'power2.out' }, 0.9)
 
     // Phase 3: hero texts
