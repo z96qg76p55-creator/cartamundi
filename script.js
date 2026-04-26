@@ -536,24 +536,19 @@ function initLanding() {
     }
   });
 
+  // Start: image slightly smaller and invisible, rises and sharpens into view
+  gsap.set('#card-fan', { scale: 0.82, opacity: 0, y: 40 });
+
   tl
-    .to('#card-1', { rotation: -44, x: -310, y: 35, scale: 0.93, duration: 1 }, 0)
-    .to('#card-2', { rotation: -22, x: -155, y: 14, duration: 1 }, 0)
-    .to('#card-3', { y: -28, scale: 1.07, duration: 1 }, 0)
-    .to('#card-4', { rotation: 22,  x: 155,  y: 14, duration: 1 }, 0)
-    .to('#card-5', { rotation: 44,  x: 310,  y: 35, scale: 0.93, duration: 1 }, 0)
-    .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
-    .to('#text-1', { opacity: 1, y: 0, duration: 0.5 }, 1.3)
-    .to('#text-1', { opacity: 0, y: -24, duration: 0.4 }, 2.2)
-    .to('#text-2', { opacity: 1, y: 0,   duration: 0.5 }, 2.6)
-    .to('#text-2',  { opacity: 0, y: -24, duration: 0.4 }, 3.5)
-    .to('#card-1',  { y: -1000, opacity: 0, duration: 0.7 }, 3.55)
-    .to('#card-5',  { y: -1000, opacity: 0, duration: 0.7 }, 3.55)
-    .to('#card-2',  { y: -1000, opacity: 0, duration: 0.7 }, 3.65)
-    .to('#card-4',  { y: -1000, opacity: 0, duration: 0.7 }, 3.65)
-    .to('#card-3',  { y: -1000, opacity: 0, duration: 0.8 }, 3.60)
-    .to('#landing-logo', { opacity: 1, duration: 0.9 }, 4.1)
-    .to({}, { duration: 0.6 }, 5.0);
+    .to('#card-fan',        { scale: 1, opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0)
+    .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0.2)
+    .to('#text-1',          { opacity: 1, y: 0, duration: 0.5 }, 1.4)
+    .to('#text-1',          { opacity: 0, y: -24, duration: 0.4 }, 2.3)
+    .to('#text-2',          { opacity: 1, y: 0, duration: 0.5 }, 2.7)
+    .to('#text-2',          { opacity: 0, y: -24, duration: 0.4 }, 3.6)
+    .to('#card-fan',        { y: -120, scale: 1.06, opacity: 0, duration: 0.9 }, 3.65)
+    .to('#landing-logo',    { opacity: 1, duration: 0.9 }, 4.2)
+    .to({},                 { duration: 0.6 }, 5.0);
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────

@@ -193,10 +193,18 @@ button { font-family: inherit; }
 /* Cards container */
 .cards-container {
   position: relative;
-  width: 220px;
-  height: 320px;
-  transform-style: preserve-3d;
-  perspective: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#card-fan {
+  width: clamp(560px, 80vw, 1100px);
+  height: auto;
+  pointer-events: none;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
 }
 
 /* Base card */
