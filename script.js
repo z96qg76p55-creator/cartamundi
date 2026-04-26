@@ -536,23 +536,22 @@ function initLanding() {
     }
   });
 
-  gsap.set(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 0, y: 40 });
+  gsap.set(['#card-1','#card-2','#card-3','#card-4'], { opacity: 0, y: 40 });
   gsap.set('#landing-glow-bg', { opacity: 0 });
 
-  const shadow     = 'drop-shadow(0 22px 48px rgba(0,0,0,0.85))';
-  const shadowBig  = 'drop-shadow(0 28px 60px rgba(0,0,0,0.95))';
+  const shadow    = 'drop-shadow(0 22px 48px rgba(0,0,0,0.85))';
+  const shadowBig = 'drop-shadow(0 28px 60px rgba(0,0,0,0.95))';
 
   tl
     // Phase 1: cards rise in as a tight stack
-    .to(['#card-1','#card-2','#card-3','#card-4','#card-5'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.05 }, 0)
+    .to(['#card-1','#card-2','#card-3','#card-4'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.05 }, 0)
     .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
 
-    // Phase 2: 5-card fan — subtle DoF, details visible
-    .to('#card-1', { rotation: -44, x: -310, y: 32, scale: 0.93, filter: `blur(0.8px) brightness(0.80) ${shadow}`,  duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-2', { rotation: -22, x: -155, y: 14, scale: 0.97, filter: `blur(0.3px) brightness(0.88) ${shadow}`,  duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-3', { y: -28, scale: 1.08,           filter: `brightness(1.06) ${shadowBig}`,                         duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-4', { rotation: 22,  x: 155,  y: 14, scale: 0.97, filter: `blur(0.3px) brightness(0.88) ${shadow}`,  duration: 1, ease: 'power2.inOut' }, 0.8)
-    .to('#card-5', { rotation: 44,  x: 310,  y: 32, scale: 0.93, filter: `blur(0.8px) brightness(0.80) ${shadow}`,  duration: 1, ease: 'power2.inOut' }, 0.8)
+    // Phase 2: 4-card fan — outer cards angled, inner pair prominent, no blur
+    .to('#card-1', { rotation: -46, x: -290, y: 34, scale: 0.91, filter: `brightness(0.82) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-2', { rotation: -15, x: -95,  y:  8, scale: 1.00, filter: `brightness(0.95) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-3', { rotation:  15, x:  95,  y:  8, scale: 1.00, filter: `brightness(0.95) ${shadow}`,   duration: 1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-4', { rotation:  46, x:  290, y: 34, scale: 0.91, filter: `brightness(0.82) ${shadowBig}`, duration: 1, ease: 'power2.inOut' }, 0.8)
     .to('#landing-glow-bg', { opacity: 1, duration: 1, ease: 'power2.out' }, 0.9)
 
     // Phase 3: hero texts
@@ -564,10 +563,9 @@ function initLanding() {
     // Phase 4: cards fly off, glow fades, logo appears
     .to('#landing-glow-bg', { opacity: 0, duration: 0.5 }, 4.0)
     .to('#card-1', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
-    .to('#card-5', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
+    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.1)
     .to('#card-2', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
-    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
-    .to('#card-3', { y: -1000, opacity: 0, duration: 0.8, ease: 'power2.in' }, 4.15)
+    .to('#card-3', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.2)
     .to('#landing-logo', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 4.8)
     .to({}, { duration: 0.6 }, 5.4);
 }
