@@ -378,7 +378,7 @@ button { font-family: inherit; }
 }
 .landing-text {
   position: absolute;
-  top: 74vh;
+  bottom: 9vh;
   left: 0;
   right: 0;
   text-align: center;
