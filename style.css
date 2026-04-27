@@ -373,21 +373,21 @@ button { font-family: inherit; }
 .landing-texts {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 10vh;
   pointer-events: none;
   z-index: 3;
 }
 .landing-text {
   position: absolute;
+  top: 74vh;
+  left: 0;
+  right: 0;
   text-align: center;
   color: #fff;
   opacity: 0;
   transform: translateY(20px);
   text-shadow: 0 0 100px rgba(227,6,19,0.25);
   max-width: 860px;
+  margin: 0 auto;
   padding: 0 24px;
 }
 
