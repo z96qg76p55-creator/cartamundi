@@ -536,41 +536,38 @@ function initLanding() {
     }
   });
 
-  // All cards start stacked at center, hidden — Pikachu (card-4) on top
-  gsap.set(['#card-1','#card-2','#card-3','#card-4'], { opacity: 0, x: 0, y: 40, rotation: 0, scale: 1 });
+  gsap.set(['#card-1','#card-2','#card-3','#card-4'], { opacity: 0, y: 40, rotation: 0, scale: 1 });
   gsap.set('#landing-glow-bg', { opacity: 0 });
 
-  const shadow = 'drop-shadow(0 20px 44px rgba(0,0,0,0.85))';
+  const shadow    = 'drop-shadow(0 22px 48px rgba(0,0,0,0.85))';
+  const shadowBig = 'drop-shadow(0 28px 60px rgba(0,0,0,0.95))';
 
   tl
-    // Phase 1: Pikachu rises in alone — center stage
-    .to('#card-4', { opacity: 1, y: 0, filter: shadow, duration: 0.8, ease: 'power3.out' }, 0)
+    // Phase 1: all 4 cards rise up as a tight stack
+    .to(['#card-1','#card-2','#card-3','#card-4'], { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.04 }, 0)
     .to('#scroll-indicator', { opacity: 0, duration: 0.3 }, 0)
-    .to('#landing-glow-bg', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.3)
 
-    // Phase 2: other cards slide out from behind Pikachu → straight horizontal line
-    // King slides left (closest)
-    .to('#card-2', { opacity: 1, x: -260, y: 0, filter: shadow, duration: 0.9, ease: 'power3.out' }, 1.0)
-    // Joker slides right (closest)
-    .to('#card-3', { opacity: 1, x: +260, y: 0, filter: shadow, duration: 0.9, ease: 'power3.out' }, 1.15)
-    // Magician slides far left — Pikachu shifts to far right simultaneously
-    .to('#card-1', { opacity: 1, x: -520, y: 0, filter: shadow, duration: 1.0, ease: 'power2.out' }, 1.3)
-    .to('#card-4', { x: +520, duration: 1.0, ease: 'power2.out' }, 1.3)
+    // Phase 2: fan out — smooth, symmetric, no blur
+    .to('#card-1', { rotation: -42, x: -280, y: 28, scale: 0.92, filter: `brightness(0.82) ${shadow}`,    duration: 1.1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-2', { rotation: -14, x:  -95, y:  8, scale: 0.97, filter: `brightness(0.93) ${shadow}`,    duration: 1.1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-3', { rotation:  14, x:   95, y:  8, scale: 0.97, filter: `brightness(0.93) ${shadow}`,    duration: 1.1, ease: 'power2.inOut' }, 0.8)
+    .to('#card-4', { rotation:  42, x:  280, y: 28, scale: 0.92, filter: `brightness(0.88) ${shadowBig}`, duration: 1.1, ease: 'power2.inOut' }, 0.8)
+    .to('#landing-glow-bg', { opacity: 1, duration: 1, ease: 'power2.out' }, 0.9)
 
     // Phase 3: hero texts
-    .to('#text-1', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 2.7)
-    .to('#text-1', { opacity: 0, y: -24, duration: 0.4 }, 3.6)
-    .to('#text-2', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 3.9)
-    .to('#text-2', { opacity: 0, y: -24, duration: 0.4 }, 4.7)
+    .to('#text-1', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 2.2)
+    .to('#text-1', { opacity: 0, y: -24, duration: 0.4 }, 3.1)
+    .to('#text-2', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 3.4)
+    .to('#text-2', { opacity: 0, y: -24, duration: 0.4 }, 4.2)
 
-    // Phase 4: cards fly off upward, logo appears
-    .to('#landing-glow-bg', { opacity: 0, duration: 0.5 }, 4.6)
-    .to('#card-1', { y: -1000, opacity: 0, duration: 0.65, ease: 'power2.in' }, 4.8)
-    .to('#card-2', { y: -1000, opacity: 0, duration: 0.65, ease: 'power2.in' }, 4.88)
-    .to('#card-3', { y: -1000, opacity: 0, duration: 0.65, ease: 'power2.in' }, 4.88)
-    .to('#card-4', { y: -1000, opacity: 0, duration: 0.65, ease: 'power2.in' }, 4.96)
-    .to('#landing-logo', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 5.4)
-    .to({}, { duration: 0.6 }, 6.0);
+    // Phase 4: cards fly off, logo appears
+    .to('#landing-glow-bg', { opacity: 0, duration: 0.5 }, 4.1)
+    .to('#card-1', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.3)
+    .to('#card-4', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.3)
+    .to('#card-2', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.42)
+    .to('#card-3', { y: -1000, opacity: 0, duration: 0.7, ease: 'power2.in' }, 4.42)
+    .to('#landing-logo', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 5.0)
+    .to({}, { duration: 0.6 }, 5.6);
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────
