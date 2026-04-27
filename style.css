@@ -369,13 +369,14 @@ button { font-family: inherit; }
   50%       { filter: drop-shadow(0 20px 80px rgba(227,6,19,0.25)) brightness(1.05); }
 }
 
-/* Landing texts */
+/* Landing texts — sit in the dark space below the card fan */
 .landing-texts {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  padding-bottom: 10vh;
   pointer-events: none;
   z-index: 3;
 }
