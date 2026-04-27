@@ -403,12 +403,23 @@ button { font-family: inherit; }
   opacity: 0;
   pointer-events: none;
 }
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 22px);
+  filter: drop-shadow(0 0 80px rgba(227,6,19,0.45)) drop-shadow(0 0 24px rgba(227,6,19,0.25));
+}
 .logo-wordmark {
   font-size: clamp(32px, 7vw, 96px);
-  font-weight: 800;
-  letter-spacing: 0.18em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #fff;
-  text-shadow: 0 0 140px rgba(227,6,19,0.45), 0 0 40px rgba(227,6,19,0.2);
+  line-height: 1;
+}
+.logo-icon {
+  width: clamp(36px, 7vw, 92px);
+  height: auto;
+  display: block;
 }
 .logo-tagline {
   margin-top: 18px;
