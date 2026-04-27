@@ -652,13 +652,15 @@ button { font-family: inherit; }
 .timeline-track {
   position: relative;
   min-width: max-content;
-  padding: 100px 60px 180px;
+  /* extra L/R padding (>= card half-width 135px) so first/last node cards
+     don't overflow and get clipped by the container's overflow-x */
+  padding: 100px 160px 180px;
 }
 .timeline-line {
   position: absolute;
   top: 128px;
-  left: 60px;
-  right: 60px;
+  left: 160px;
+  right: 160px;
   height: 1px;
   background: linear-gradient(to right, transparent, var(--border) 5%, var(--border) 95%, transparent);
 }
@@ -830,6 +832,8 @@ button { font-family: inherit; }
   .timeline-nodes { gap: 44px; }
   .timeline-node { width: 68px; }
   .node-card { width: 220px; }
+  .timeline-track { padding: 100px 120px 180px; }
+  .timeline-line { left: 120px; right: 120px; }
   .stat-grid { grid-template-columns: 1fr; gap: 8px; }
   .footer-inner { padding: 30px 20px; }
   .nav-inner { padding: 8px 14px; gap: 2px; }
