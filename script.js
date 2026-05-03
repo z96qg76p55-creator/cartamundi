@@ -604,6 +604,7 @@ function initAccordions() {
     const sectionId = accordion.id.replace('accordion-', '');
     const img       = document.getElementById(`accordion-img-${sectionId}`);
     const fallback  = img ? img.nextElementSibling : null;
+    const wrap      = img ? img.parentElement : null;
 
     accordion.querySelectorAll('.accordion-item').forEach(item => {
       item.querySelector('.accordion-trigger').addEventListener('click', () => {
@@ -619,6 +620,8 @@ function initAccordions() {
           item.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'true');
 
           if (img && item.dataset.image) {
+            // Has an image — make sure the panel is visible, then swap src
+            if (wrap) wrap.style.display = '';
             img.style.opacity   = '0';
             img.style.transform = 'scale(1.04)';
             setTimeout(() => {
@@ -640,11 +643,8 @@ function initAccordions() {
               };
             }, 160);
           } else if (img && !item.dataset.image) {
-            img.style.display = 'none';
-            if (fallback) {
-              fallback.style.background = getFallback(item.dataset.imageFallback);
-              fallback.style.display    = 'flex';
-            }
+            // No image for this item — hide the entire panel (image + fallback)
+            if (wrap) wrap.style.display = 'none';
           }
 
           triggerCounters();
