@@ -488,7 +488,9 @@ function initStarfield() {
       s.vx *= 0.88; s.vy *= 0.88;
       s.x  += s.vx; s.y  += s.vy;
 
-      const drawY = s.y - parallaxOffset % H;
+      // Proper modulo wrap so stars cycle through the viewport
+      // instead of walking off the top edge as you scroll down.
+      const drawY = ((s.y - parallaxOffset) % H + H) % H;
       const grd = ctx.createRadialGradient(s.x, drawY, 0, s.x, drawY, s.r * 2.5);
       grd.addColorStop(0, s.color + a + ')');
       grd.addColorStop(1, s.color + '0)');
