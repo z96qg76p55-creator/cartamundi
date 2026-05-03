@@ -653,12 +653,13 @@ button { font-family: inherit; }
   position: relative;
   min-width: max-content;
   /* extra L/R padding (>= card half-width 135px) so first/last node cards
-     don't overflow and get clipped by the container's overflow-x */
-  padding: 100px 160px 180px;
+     don't overflow and get clipped by the container's overflow-x;
+     extra bottom padding so the card (now always below dot) fully fits */
+  padding: 60px 160px 280px;
 }
 .timeline-line {
   position: absolute;
-  top: 128px;
+  top: 88px;
   left: 160px;
   right: 160px;
   height: 1px;
@@ -743,15 +744,9 @@ button { font-family: inherit; }
   pointer-events: all;
   transform: translateX(-50%) translateY(0);
 }
-/* Even nodes: card goes upward */
-.timeline-node:nth-child(even) .node-card {
-  top: auto;
-  bottom: 70px;
-  transform: translateX(-50%) translateY(-12px);
-}
-.timeline-node:nth-child(even).active .node-card {
-  transform: translateX(-50%) translateY(0);
-}
+/* All cards drop below the dot uniformly — keeps full card visible
+   regardless of node index (the container's overflow-x: auto
+   implicitly clips overflow-y, so upward-positioned cards got cut). */
 
 .node-card-year {
   display: block;
