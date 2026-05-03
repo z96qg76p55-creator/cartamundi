@@ -599,22 +599,18 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Soft fade-to-transparent at the bottom edge so the photo
-     blends into the dark page background instead of a hard line. */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 70%,
-    rgba(0, 0, 0, 0.5) 88%,
-    transparent 100%
-  );
-          mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 70%,
-    rgba(0, 0, 0, 0.5) 88%,
-    transparent 100%
-  );
+  /* Soft fade-to-transparent on ALL four edges so the photo
+     dissolves smoothly into the dark page background instead
+     of having any hard line. Two perpendicular linear gradients
+     combined with mask-composite: intersect = uniform soft edge. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+          mask-image:
+    linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  -webkit-mask-composite: source-in;       /* legacy WebKit */
+          mask-composite: intersect;       /* modern browsers */
 }
 .accordion-image-wrap img {
   width: 100%;
