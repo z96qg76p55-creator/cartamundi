@@ -608,6 +608,34 @@ button { font-family: inherit; }
   object-fit: contain;        /* safety net — never crop */
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
+/* Frosted-glass corner overlay on every accordion image — a small
+   translucent panel that blurs the photo behind it, giving the
+   "liquid glass / reflection" feel the rest of the site uses. */
+.accordion-image-wrap::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: clamp(110px, 28%, 220px);
+  height: clamp(80px, 26%, 170px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(255, 255, 255, 0.07) 55%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-top-right-radius: 22px;
+  box-shadow:
+    inset  1px  1px 1px rgba(255, 255, 255, 0.35),
+    inset -1px -1px 1px rgba(255, 255, 255, 0.06),
+    0 -2px 14px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  z-index: 2;
+}
 .img-fallback {
   position: absolute;
   inset: 0;
