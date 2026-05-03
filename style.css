@@ -835,7 +835,12 @@ button { font-family: inherit; }
   margin-bottom: 14px;
 }
 .footer-meta { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-.footer-meta--muted { color: rgba(255,255,255,0.28); margin-top: 6px; }
+.footer-meta--muted {
+  color: rgba(255,255,255,0.28);
+  margin-top: 6px;
+  text-align: center;
+  padding-right: 24px;
+}
 .footer-divider { height: 1px; background: var(--border); margin: 14px 0; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
