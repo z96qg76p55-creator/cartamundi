@@ -552,18 +552,36 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 0;                /* hide the literal '+' text from HTML */
   flex-shrink: 0;
-  transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
   color: var(--text-muted);
   line-height: 1;
+  position: relative;
 }
+/* Two stacked card-suit glyphs — ♠ shown by default, ♣ shown when
+   the accordion item is active. Crossfade with a tiny scale pop. */
+.accordion-icon::before,
+.accordion-icon::after {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.accordion-icon::before { content: '\2660'; opacity: 1;  transform: scale(1);   }   /* ♠ */
+.accordion-icon::after  { content: '\2663'; opacity: 0;  transform: scale(0.6); }   /* ♣ */
+
 .accordion-item.active .accordion-icon {
-  transform: rotate(45deg);
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
 }
+.accordion-item.active .accordion-icon::before { opacity: 0; transform: scale(0.6); }
+.accordion-item.active .accordion-icon::after  { opacity: 1; transform: scale(1);   }
 .accordion-item.active .accordion-trigger { color: #fff; }
 
 .accordion-body {
