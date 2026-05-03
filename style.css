@@ -585,19 +585,27 @@ button { font-family: inherit; }
 .accordion-body ul { padding-left: 20px; margin-bottom: 10px; color: var(--text-muted); }
 .accordion-body li { margin-bottom: 5px; line-height: 1.6; }
 
-/* Image panel */
+/* Image panel — auto-sizes to each photo's natural aspect ratio
+   so nothing gets cropped. No more fixed 4/5 frame. */
 .accordion-image-panel { position: sticky; top: 100px; }
 .accordion-image-wrap {
   width: 100%;
-  aspect-ratio: 4/5;
+  min-height: 280px;          /* keeps fallback gradient visible if img 404s */
+  max-height: 80vh;           /* tall portraits don't overflow the viewport */
   border-radius: var(--radius-lg) !important;
   overflow: hidden;
   position: relative;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .accordion-image-wrap img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;               /* preserve photo aspect ratio */
+  max-height: 80vh;
+  display: block;
+  object-fit: contain;        /* safety net — never crop */
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
 .img-fallback {
