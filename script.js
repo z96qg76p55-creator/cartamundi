@@ -12,7 +12,11 @@ window.addEventListener('load', () => {
   initTimeline();
   initReveal();
   initCounters();
-  initLiquidGlass();
+  // Disabled: initLiquidGlass() replaced the nav with a WebGL pill that
+  // refracted a stale html2canvas snapshot, causing visible streaks/bands.
+  // The original .nav-inner.glass-pill already has real-time
+  // backdrop-filter glass, which renders cleanly. Keeping the CSS version.
+  // initLiquidGlass();
 });
 
 // ─── SPLASH CURSOR — WebGL Fluid Simulation ──────────────
