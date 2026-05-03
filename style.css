@@ -595,10 +595,26 @@ button { font-family: inherit; }
   border-radius: var(--radius-lg) !important;
   overflow: hidden;
   position: relative;
-  background: rgba(0, 0, 0, 0.35);
+  background: transparent;     /* let the page show through the fade */
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Soft fade-to-transparent at the bottom edge so the photo
+     blends into the dark page background instead of a hard line. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 70%,
+    rgba(0, 0, 0, 0.5) 88%,
+    transparent 100%
+  );
+          mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 70%,
+    rgba(0, 0, 0, 0.5) 88%,
+    transparent 100%
+  );
 }
 .accordion-image-wrap img {
   width: 100%;
