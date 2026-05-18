@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<!-- v2 -->
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartamundi — Kaarten voor de Wereld</title>
+  <meta name="description" content="Een economisch portret van Cartamundi, 's werelds grootste speelkaartenmaker, gevestigd in Turnhout, België." />
+  <meta name="theme-color" content="#000005" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>" />
+  <link rel="stylesheet" href="style.css?v=13" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js?v=4" defer></script>
+</head>
+<body>
+
+  <!-- SVG Liquid Glass Filter -->
+  <svg class="glass-filter-svg" aria-hidden="true">
+    <defs>
+      <filter id="container-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves="1" seed="1" result="turbulence"/>
+        <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise"/>
+        <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="70" xChannelSelector="R" yChannelSelector="B" result="displaced"/>
+        <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur"/>
+        <feComposite in="finalBlur" in2="finalBlur" operator="over"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- WebGL Fluid Simulation -->
+  <canvas id="fluid" aria-hidden="true"></canvas>
+
+  <!-- Canvas Starfield -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <!-- ═══════════════════════════════════════════════════════
+       LANDING
+  ═══════════════════════════════════════════════════════ -->
+  <section id="landing" aria-label="Landing">
+    <div class="landing-stage">
+
+      <div class="landing-glow" id="landing-glow-bg" aria-hidden="true"></div>
+
+      <div class="cards-container" id="cards-container">
+        <div class="card-img" id="card-1"><img src="assets/images/card-magician.png" alt="De Magiër tarotkaart" /></div>
+        <div class="card-img" id="card-2"><img src="assets/images/card-pikachu.png"  alt="Pokémon kaart" /></div>
+        <div class="card-img" id="card-3"><img src="assets/images/card-king.png"     alt="Schoppen Heer" /></div>
+        <div class="card-img" id="card-4"><img src="assets/images/card-joker.png"    alt="Joker kaart" /></div>
+      </div><!-- /cards-container -->
+
+      <div class="landing-texts">
+        <p class="landing-text hero-text" id="text-1">You've held their products<br>a thousand times</p>
+        <p class="landing-text hero-text" id="text-2">but you never<br>knew their name</p>
+      </div>
+
+      <div class="landing-logo" id="landing-logo">
+        <div class="logo-mark">
+          <span class="logo-wordmark">Cartamundi</span>
+          <svg class="logo-icon" width="80" height="87" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Red spade outer -->
+            <path d="M 60 6
+                     C 78 6, 116 38, 116 76
+                     C 116 102, 90 112, 73 101
+                     L 80 122
+                     L 40 122
+                     L 47 101
+                     C 30 112, 4 102, 4 76
+                     C 4 38, 42 6, 60 6 Z"
+                  fill="#E30613"/>
+            <!-- White heart cutout -->
+            <path d="M 60 54
+                     C 54 42, 32 42, 32 58
+                     C 32 74, 60 90, 60 90
+                     C 60 90, 88 74, 88 58
+                     C 88 42, 66 42, 60 54 Z"
+                  fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="logo-tagline">Kaarten voor de Wereld — sinds 1765</div>
+      </div>
+
+      <div class="scroll-indicator" id="scroll-indicator" aria-hidden="true">
+        <span>scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════════════════════ -->
+  <nav id="main-nav" aria-label="Hoofdnavigatie">
+    <div class="nav-inner glass-pill">
+      <a href="#ontstaan" class="nav-link" data-section="ontstaan">Ontstaan</a>
+      <span class="nav-dot" aria-hidden="true">·</span>
+      <a href="#groei" class="nav-link" data-section="groei">Groei</a>
+      <span class="nav-dot" aria-hidden="true">·</span>
+      <a href="#nu" class="nav-link" data-section="nu">Het Bedrijf Nu</a>
+      <span class="nav-dot" aria-hidden="true">·</span>
+      <a href="#toekomst" class="nav-link" data-section="toekomst">Toekomst</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 1 — ONTSTAAN
+  ═══════════════════════════════════════════════════════ -->
+  <section id="ontstaan" class="section-wrapper" aria-label="Ontstaan van het bedrijf">
+    <div class="section-header reveal">
+      <p class="label">01 — Ontstaan</p>
+      <h2 class="section-title">Het verhaal begint in Turnhout</h2>
+    </div>
+
+    <div class="accordion-layout">
+      <div class="accordion" id="accordion-ontstaan">
+
+        <div class="accordion-item glass active" data-image="assets/images/s1-wie.png" data-image-fallback="grad-red">
+          <button class="accordion-trigger" aria-expanded="true">
+            <span class="accordion-icon">+</span>
+            <span>Wie?</span>
+          </button>
+          <div class="accordion-body">
+            <p>Cartamundi werd opgericht op <strong>27 juni 1970</strong> als een joint venture tussen drie Turnhoutse drukkerijen:</p>
+            <ul>
+              <li><strong>Brepols</strong> — speelkaarten vanaf 1826, drukkerij actief sinds 1800</li>
+              <li><strong>Van Genechten</strong> — kaartproductie vanaf ~1840, exporteur naar Aziatische markten</li>
+              <li><strong>Biermans</strong> — derde partner, eveneens gevestigd in Turnhout</li>
+            </ul>
+            <p>De drie bedrijven bundelden hun speelkaartenafdelingen om samen sterker te staan op de Europese markt.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s1-waar.jpg" data-image-fallback="grad-blue">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Waar?</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Turnhout</strong>, provincie Antwerpen — historisch bekend als de <em>"Stad van de Speelkaarten"</em>. Straten dragen namen als Hartenstraat en Jokerstraat, en de stad heeft een speelkaartenmuseum.</p>
+            <p>Belgische kaartmakers zijn al actief sinds de 14e eeuw. In de 19e eeuw werd Turnhout het Europees epicentrum van de kaartindustrie.</p>
+            <p>Huidig adres: <strong>Turnovatoren 14 bus 1, Turnhout, België</strong></p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s1-wanneer.jpg" data-image-fallback="grad-purple">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Wanneer?</span>
+          </button>
+          <div class="accordion-body">
+            <p>Officieel opgericht: <strong>27 juni 1970</strong>.</p>
+            <p>De roots gaan echter terug tot <strong>1765</strong> via de voorlopers Brepols, Van Genechten en Biermans — meer dan <strong>260 jaar ervaring</strong> in kaartproductie.</p>
+            <p>Cartamundi claimt actief: <em>"onze drukpersen draaien sinds 1765"</em> — een krachtig marketingverhaal dat hun historische legitimiteit onderstreept.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s1-activiteiten.jpg" data-image-fallback="grad-gold">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Oorspronkelijke activiteiten</span>
+          </button>
+          <div class="accordion-body">
+            <p>Het produceren en verkopen van <strong>speelkaarten</strong>. De naam "Cartamundi" is Latijn voor <em>"kaarten voor de wereld"</em> — oorspronkelijk geschreven als twee woorden: "Carta Mundi".</p>
+            <p>De fusie in 1970 was een strategische zet: door krachten te bundelen konden de drie bedrijven efficiënter produceren en beter concurreren op een internationale markt die in de late jaren '60 steeds meer onder druk stond door massaproductietechnieken.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="accordion-image-panel reveal">
+        <div class="accordion-image-wrap glass">
+          <img src="assets/images/s1-wie.png" id="accordion-img-ontstaan" alt="Cartamundi voorlopers (Brepols, Van Genechten, Biermans)"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="img-fallback" style="background:linear-gradient(135deg,#E30613 0%,#7a0009 100%)">
+            <span>📜</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 2 — GROEI
+  ═══════════════════════════════════════════════════════ -->
+  <section id="groei" class="section-wrapper" aria-label="Groei van het bedrijf">
+    <div class="section-header reveal">
+      <p class="label">02 — Groei</p>
+      <h2 class="section-title">Van Turnhout naar de wereld</h2>
+      <p class="section-subtitle">Klik op een jaar om de mijlpaal te ontdekken</p>
+    </div>
+
+    <div class="timeline-container reveal">
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+        <div class="timeline-nodes">
+
+          <div class="timeline-node" data-year="1765">
+            <button class="node-btn" aria-label="Mijlpaal 1765">
+              <span class="node-circle"></span>
+              <span class="node-year">1765</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">1765</span>
+              <h3 class="node-card-title">De roots beginnen</h3>
+              <p>Eerste speelkaarten gedrukt in Turnhout door de voorlopers van Cartamundi. Brepols begint in 1826, Van Genechten rond 1840 — maar de druktraditie in de regio gaat terug tot 1765.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node milestone" data-year="1970">
+            <button class="node-btn" aria-label="Mijlpaal 1970">
+              <span class="node-circle"></span>
+              <span class="node-year">1970</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">1970</span>
+              <h3 class="node-card-title">Oprichting Cartamundi</h3>
+              <p>Op <strong>27 juni 1970</strong> bundelen Brepols, Van Genechten en Biermans hun krachten. <em>Carta Mundi</em> — "kaarten voor de wereld" — is geboren als joint venture in Turnhout.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="1993">
+            <button class="node-btn" aria-label="Mijlpaal 1993">
+              <span class="node-circle"></span>
+              <span class="node-year">1993</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">1993</span>
+              <h3 class="node-card-title">Eerste internationale vestiging</h3>
+              <p>Oprichting van Cartamundi France SARL nabij Parijs — de eerste buitenlandse vestiging. Een jaar later: Cartamundi Inc. in Kentucky, VS (1994) en een productiefaciliteit in Kingsport, Tennessee (1996).</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="1999">
+            <button class="node-btn" aria-label="Mijlpaal 1999">
+              <span class="node-circle"></span>
+              <span class="node-year">1999</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">1999</span>
+              <h3 class="node-card-title">Eerste overname: AGMüller</h3>
+              <p>Overname van de Zwitserse <strong>AGMüller</strong> — de eerste acquisitie in een lange reeks. Ook oprichting van Cartamundi Nordic. Begin van de systematische groeistrategie via overnames.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2002">
+            <button class="node-btn" aria-label="Mijlpaal 2002">
+              <span class="node-circle"></span>
+              <span class="node-year">2002</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2002</span>
+              <h3 class="node-card-title">Duitsland: ASS Altenburger</h3>
+              <p>Overname van <strong>ASS Spielkartenfabrik Altenburg</strong> van Ravensburger. In 2000 was al Altenburger und Stralsunder Spielkarten overgenomen. Sterke positie in de Duitstalige markt.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2005">
+            <button class="node-btn" aria-label="Mijlpaal 2005">
+              <span class="node-circle"></span>
+              <span class="node-year">2005</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2005</span>
+              <h3 class="node-card-title">Brazilië & Groot-Brittannië</h3>
+              <p>50% belang in <strong>Copag Da Amazonia</strong> (Brazilië) — entree in Latijns-Amerika. Eerder ook overname van Games & Print Services (VK, 2003).</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2010">
+            <button class="node-btn" aria-label="Mijlpaal 2010">
+              <span class="node-circle"></span>
+              <span class="node-year">2010</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2010</span>
+              <h3 class="node-card-title">India & Japan — echte wereldspeler</h3>
+              <p>50% belang in <strong>Parksons Games & Sports</strong> (India) — de grootste kaartmaker van India. Joint venture in Tokyo. Introductie van lasersnijmachines voor precisieproductie.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2014">
+            <button class="node-btn" aria-label="Mijlpaal 2014">
+              <span class="node-circle"></span>
+              <span class="node-year">2014</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2014</span>
+              <h3 class="node-card-title">France Cartes overname</h3>
+              <p>Overname van de <strong>France Cartes groep</strong> (2014), gevolgd door twee Hasbro-fabrieken in 2015: Waterford (Ierland) en East Longmeadow (Massachusetts, VS).</p>
+            </div>
+          </div>
+
+          <div class="timeline-node milestone" data-year="2015">
+            <button class="node-btn" aria-label="Mijlpaal 2015">
+              <span class="node-circle"></span>
+              <span class="node-year">2015</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2015</span>
+              <h3 class="node-card-title">Grootste spellenfabrikant ter wereld</h3>
+              <p>Na de Hasbro-overnames produceert Cartamundi <strong>Monopoly, Uno, Trivial Pursuit, Guess Who en Risk</strong>. Van speelkaartenmaker naar totaaloplosser voor de gehele mondiale spelindustrie.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node milestone" data-year="2019">
+            <button class="node-btn" aria-label="Mijlpaal 2019">
+              <span class="node-circle"></span>
+              <span class="node-year">2019</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2019</span>
+              <h3 class="node-card-title">Overname USPCC — het Bicycle-merk</h3>
+              <p>Overname van <strong>The United States Playing Card Company</strong> van Newell Brands. Cartamundi verwerft: <strong>Bicycle, Bee, Tally-Ho, KEM, Aviator, Hoyle, Fournier</strong> en meer.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2023">
+            <button class="node-btn" aria-label="Mijlpaal 2023">
+              <span class="node-circle"></span>
+              <span class="node-year">2023</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2023</span>
+              <h3 class="node-card-title">Reorganisatie & digitale innovatie</h3>
+              <p>Sluiting van de Hasbro-fabriek in Waterford, Ierland (235 banen). Tegelijk: partnerschap met de <strong>Kings League</strong> voor hybride trading cards — eerste stap naar het Hro-platform.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2024">
+            <button class="node-btn" aria-label="Mijlpaal 2024">
+              <span class="node-circle"></span>
+              <span class="node-year">2024</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2024</span>
+              <h3 class="node-card-title">Uitbreiding Turnhout & Altenburg</h3>
+              <p>Uitbreiding productiefaciliteit Turnhout <strong>(+50 nieuwe banen)</strong> door groeiende vraag naar verzamelkaarten. Opening nieuwe hyperperformante site in <strong>Altenburg, Duitsland</strong>.</p>
+            </div>
+          </div>
+
+          <div class="timeline-node" data-year="2025">
+            <button class="node-btn" aria-label="Mijlpaal 2025">
+              <span class="node-circle"></span>
+              <span class="node-year">2025</span>
+            </button>
+            <div class="node-card glass">
+              <span class="node-card-year">2025</span>
+              <h3 class="node-card-title">Bicycle 140 jaar & 100M decks</h3>
+              <p>USPCC bereikt mijlpaal van <strong>100 miljoen geproduceerde decks</strong>. Viering 140e verjaardag Bicycle met Cardtopia 2025 (14 juni). Heruitgave historische Louis XV kaarten door Maison Grimaud.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 3 — HET BEDRIJF NU
+  ═══════════════════════════════════════════════════════ -->
+  <section id="nu" class="section-wrapper" aria-label="Het bedrijf nu">
+    <div class="section-header reveal">
+      <p class="label">03 — Het Bedrijf Nu</p>
+      <h2 class="section-title">Een wereldspeler in spellen</h2>
+    </div>
+
+    <div class="accordion-layout">
+      <div class="accordion" id="accordion-nu">
+
+        <div class="accordion-item glass active" data-image="assets/images/s3-activiteiten.jpg" data-image-fallback="grad-red">
+          <button class="accordion-trigger" aria-expanded="true">
+            <span class="accordion-icon">+</span>
+            <span>Huidige activiteiten</span>
+          </button>
+          <div class="accordion-body">
+            <p>Cartamundi is de <strong>wereldleider in "play solutions"</strong> — ze ontwerpen, produceren en distribueren speelkaarten, kaartspellen, bordspellen, trading cards, puzzels en promotionele speloplossingen.</p>
+            <p>Het bedrijf opereert als <strong>fabrikant</strong> (manufacturing partner voor Hasbro, Mattel, The Pokémon Company) én als <strong>merkhouder</strong> (eigen portfolio: Bicycle, Copag, KEM en meer).</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-missie.jpg" data-image-fallback="grad-blue">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Missie, visie &amp; waarden</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Missie:</strong> "Sharing the magic of playing together" — de magie van samen spelen delen.</p>
+            <p><strong>Visie:</strong> "Live different, Play different" — de wereld een betere plek maken door spel. Spelen verbindt mensen, vermindert stress en bevordert leren.</p>
+            <p><strong>Waarden:</strong> Familiebedrijf met focus op innovatie, kwaliteit, duurzaamheid en gemeenschap. Medewerkers noemen zichzelf trots <em>"Cartamundians"</em>.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-personeel.jpg" data-image-fallback="grad-purple">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Omzet, winst &amp; personeel</span>
+          </button>
+          <div class="accordion-body">
+            <div class="stat-grid">
+              <div class="stat-badge glass">
+                <span class="stat-number" id="counter-employees">3000</span>
+                <span class="stat-label">werknemers</span>
+              </div>
+              <div class="stat-badge glass">
+                <span class="stat-number" id="counter-countries">20</span>
+                <span class="stat-label">landen actief</span>
+              </div>
+              <div class="stat-badge glass">
+                <span class="stat-number" id="counter-factories">13</span>
+                <span class="stat-label">fabrieken</span>
+              </div>
+            </div>
+            <p>Cartamundi is een <strong>privaat familiebedrijf</strong> en publiceert geen gedetailleerde financiële cijfers. Geschatte IT-uitgaven: <strong>$73,6 miljoen/jaar</strong>. Marktaandeel VS: ~3,1%.</p>
+            <p>Officiële Belgische cijfers: NBB Balanscentrale — ondernemingsnummer <strong>BE 0435.618.757</strong>.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-landen.jpg" data-image-fallback="grad-teal">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Landen &amp; locaties</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>13 productiefaciliteiten:</strong> Turnhout (HQ), Canvey Island (VK), Altenburg (DE), Saint-Max (FR), Kraków (PL), Mumbai (IN), Sōka (JP), Dallas (TX), East Longmeadow (MA), Erlanger (KY), Vitoria-Gasteiz (ES), Copag (BR), Mexico (TCG).</p>
+            <p><strong>Verkoopkantoren</strong> in 20+ landen op alle continenten. 6 designcentra, 1 digitale studio en 1 globaal R&amp;D-centrum.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-merken.jpg" data-image-fallback="grad-gold">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Assortiment</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Eigen merken:</strong> Bicycle (wereldwijd bestseller), Bee (casino), Copag (premium plastic), KEM (acetaat), Fournier (ES), ASS Altenburger (DE), Grimaud (FR), Tally-Ho, Aviator, Hoyle, Eagle 601 (Azië).</p>
+            <p><strong>Productie voor derden:</strong> Monopoly, Uno, Magic: The Gathering, Pokémon TCG, Trivial Pursuit, Guess Who, Risk — voor Hasbro, Mattel en Wizards of the Coast.</p>
+            <p><strong>Diensten:</strong> Design, verpakking, promotionele kaarten en digitale producten via het Hro-platform.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="" data-image-fallback="">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Verkoopkanalen</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>B2B:</strong> Primaire focus. Cartamundi levert aan speelgoedbedrijven (Hasbro, Mattel), retailers en casino's wereldwijd.</p>
+            <p><strong>B2C:</strong> Via eigen merkwebsites (bicyclecards.com, copag.com.br), Amazon en internationale retailers.</p>
+            <p><strong>Custom / promotioneel:</strong> Directe verkoop aan bedrijven voor gepersonaliseerde speelkaarten en promotiecampagnes.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-comm.jpg" data-image-fallback="grad-purple">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Communicatiestrategie</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Website:</strong> cartamundi.com (corporate) + aparte sites per merk.</p>
+            <p><strong>Social media:</strong> LinkedIn (corporate, employer branding), Facebook en Instagram (merkspecifiek via Bicycle, Copag).</p>
+            <p><strong>Events & partnerships:</strong> Cardtopia (jaarlijks Bicycle-evenement), Hro DC Comics, Kings League. Sponsoring Vlerick Alumni Gaming & Esports Club.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-mvo.jpg" data-image-fallback="grad-green">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>MVO &amp; Duurzaamheid</span>
+          </button>
+          <div class="accordion-body">
+            <p>Cartamundi publiceert een jaarlijks <strong>Good Neighbor Report</strong> met 4 pijlers:</p>
+            <ul>
+              <li><strong>Klimaat:</strong> CO2-reductie in alle productieprocessen</li>
+              <li><strong>Mensen:</strong> Inclusiviteit &amp; diversiteit</li>
+              <li><strong>Gemeenschap:</strong> Cartamundi Global Fund — steun aan kansarmen</li>
+              <li><strong>Materialen:</strong> KPI's via samenwerking met Rever Consulting</li>
+            </ul>
+            <p>Doelen voor <strong>2025</strong> (kort) en <strong>2030</strong> (middellange termijn) per pijler geformuleerd.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s3-actualiteit.jpg" data-image-fallback="grad-red">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Bedrijf in de actualiteit</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>2024:</strong> Uitbreiding productiefaciliteit Turnhout (+50 banen). Opening hyperperformante site in Altenburg, Duitsland.</p>
+            <p><strong>2025:</strong> USPCC bereikt 100 miljoen geproduceerde decks. Cardtopia 2025 (14 juni) — viering 140e verjaardag Bicycle. Heruitgave historische Louis XV kaarten door Maison Grimaud.</p>
+            <p><strong>2026:</strong> Jobdag Turnhout (14 maart) — Cartamundi zoekt 150 nieuwe medewerkers. Bewijs van aanhoudende groei.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="accordion-image-panel reveal">
+        <div class="accordion-image-wrap glass">
+          <img src="assets/images/s3-activiteiten.jpg" id="accordion-img-nu" alt="Cartamundi activiteiten"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="img-fallback" style="background:linear-gradient(135deg,#E30613 0%,#7a0009 100%)">
+            <span>🃏</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 4 — TOEKOMST
+  ═══════════════════════════════════════════════════════ -->
+  <section id="toekomst" class="section-wrapper" aria-label="Toekomstperspectieven">
+    <div class="section-header reveal">
+      <p class="label">04 — Toekomst</p>
+      <h2 class="section-title">Spelen in het digitale tijdperk</h2>
+    </div>
+
+    <div class="accordion-layout">
+      <div class="accordion" id="accordion-toekomst">
+
+        <div class="accordion-item glass active" data-image="assets/images/s4-hybride.jpg" data-image-fallback="grad-blue">
+          <button class="accordion-trigger" aria-expanded="true">
+            <span class="accordion-icon">+</span>
+            <span>Digitaal-fysieke hybride strategie</span>
+          </button>
+          <div class="accordion-body">
+            <p>Cartamundi investeert sterk in de convergentie van <strong>fysieke kaarten en digitale ervaringen</strong>. Het <strong>Hro-platform</strong> combineert fysieke verzamelkaarten met digitale versies — gelanceerd met DC Comics/Warner Bros. en de Kings League.</p>
+            <p>CEO Stefaan Merckx: <em>"Cartamundi is committed to providing consumers with unprecedented experiences and innovative ways to connect and play."</em></p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s4-groei.jpg" data-image-fallback="grad-red">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Wereldwijde groei &amp; capaciteit</span>
+          </button>
+          <div class="accordion-body">
+            <p>Uitbreiding Turnhout (+50 banen, 2024), nieuwe fabriek Altenburg (2024), en werving van <strong>150 nieuwe werknemers</strong> in 2026 wijzen op aanhoudende sterke groei.</p>
+            <p>Aandrijver: stijgende mondiale vraag naar <strong>trading cards</strong> (Pokémon TCG, Magic: The Gathering).</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s4-innovatie.jpg" data-image-fallback="grad-purple">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Innovatie in productie</span>
+          </button>
+          <div class="accordion-body">
+            <p>Investeringen in <strong>lasersnijmachines</strong> (sinds 2010), digitale druktechnieken voor limited editions, en plastic coatings voor duurzamere kaarten.</p>
+            <p>De nieuwe fabriek in Altenburg wordt omschreven als <strong>"hyperperformant"</strong> — gericht op maximale efficiëntie en capaciteit voor de groeiende trading card markt.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s4-duurzaam.jpg" data-image-fallback="grad-green">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Duurzaamheidsdoelen 2030</span>
+          </button>
+          <div class="accordion-body">
+            <p>Via het <strong>Good Neighbor Report</strong> formuleert Cartamundi concrete KPI's per pijler voor 2030:</p>
+            <ul>
+              <li>Significante <strong>CO2-reductie</strong> in alle productiefaciliteiten</li>
+              <li>Verbeterde <strong>inclusiviteit &amp; diversiteit</strong></li>
+              <li>Verantwoord <strong>materiaalbeheer</strong> via externe consultants</li>
+              <li>Uitbreiding van het <strong>Cartamundi Global Fund</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item glass" data-image="assets/images/s4-ecosysteem.jpg" data-image-fallback="grad-teal">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span class="accordion-icon">+</span>
+            <span>Entertainment ecosysteem</span>
+          </button>
+          <div class="accordion-body">
+            <p>Cartamundi positioneert zich als een <strong>entertainment-ecosysteem</strong> in plaats van enkel fabrikant. Partnerships met Kings League (voetbal + gaming), Warner Bros. (DC Comics) en een eigen digitale studio.</p>
+            <p>Fysieke producten worden het startpunt voor bredere <strong>digitale community-ervaringen</strong> — spelen zonder grenzen tussen fysiek en digitaal.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="accordion-image-panel reveal">
+        <div class="accordion-image-wrap glass">
+          <img src="assets/images/s4-hybride.jpg" id="accordion-img-toekomst" alt="Holografische / digitaal-fysieke hybride speelkaart"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="img-fallback" style="background:linear-gradient(135deg,#1a3a8f 0%,#0f2460 100%)">
+            <span>🚀</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════ -->
+  <footer id="footer" class="section-wrapper">
+    <div class="footer-inner glass reveal">
+      <div class="footer-grid">
+
+        <div class="footer-col">
+          <h3 class="footer-heading">Bronvermelding</h3>
+          <ol class="sources-list">
+            <li><a href="https://cartamundi.com/en/who-we-are/" target="_blank" rel="noopener">Cartamundi — Who We Are (officieel)</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Cartamundi" target="_blank" rel="noopener">Cartamundi — Wikipedia (EN)</a></li>
+            <li><a href="https://www.cartamundi.com/us/en/cartamundi-history/history/" target="_blank" rel="noopener">Cartamundi — History (USA)</a></li>
+            <li><a href="https://grokipedia.com/page/Cartamundi" target="_blank" rel="noopener">Cartamundi — Grokipedia</a></li>
+            <li><a href="https://www.wopc.co.uk/belgium/carta-mundi/cartamundi" target="_blank" rel="noopener">The World of Playing Cards</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/United_States_Playing_Card_Company" target="_blank" rel="noopener">USPCC — Wikipedia</a></li>
+            <li><a href="https://cartamundi.com/app/uploads/2024/04/GoodNeighborReport.pdf" target="_blank" rel="noopener">Good Neighbor Report 2022</a></li>
+            <li><a href="https://cartamundi.com/en/corporate-social-responsibility/" target="_blank" rel="noopener">Cartamundi — CSR</a></li>
+            <li><a href="https://cartamundi.com/en/press/the-kings-league-and-cartamundi/" target="_blank" rel="noopener">Kings League Partnership</a></li>
+            <li><a href="https://www.prnewswire.com/news-releases/cartamundi-and-warner-bros/" target="_blank" rel="noopener">Cartamundi &amp; Warner Bros. DC Hro</a></li>
+            <li><a href="https://playingcarddecks.com/blogs/all-in/the-cartamundi-uspcc" target="_blank" rel="noopener">PlayingCardDecks — USPCC</a></li>
+            <li><a href="https://www.crunchbase.com/organization/cartamundi" target="_blank" rel="noopener">Cartamundi — Crunchbase</a></li>
+            <li><a href="https://www.ibisworld.com/us/company/cartamundi/426768/" target="_blank" rel="noopener">IBISWorld — Cartamundi</a></li>
+            <li><a href="https://www.playingcardshop.eu/cartamundi.html" target="_blank" rel="noopener">PlayingCardShop.eu</a></li>
+            <li><a href="https://consult.cbso.nbb.be/" target="_blank" rel="noopener">NBB Balanscentrale — BE 0435.618.757</a></li>
+            <li><a href="https://cartamundi.com/en/press/" target="_blank" rel="noopener">Cartamundi — Persruimte 2025–2026</a></li>
+            <li><a href="https://www.vanishingincmagic.com/playing-cards/articles/cartamundi-uspcc" target="_blank" rel="noopener">Vanishing Inc — Cartamundi &amp; USPCC</a></li>
+          </ol>
+        </div>
+
+        <div class="footer-col footer-col--right">
+          <div class="footer-logo">CARTAMUNDI</div>
+          <p class="footer-meta">POP-onderzoeksopdracht</p>
+          <p class="footer-meta">4e jaar Economie — April 2026</p>
+          <p class="footer-meta">Sector: Speelgoed &amp; Spellen</p>
+          <p class="footer-meta">HQ: Turnhout, België</p>
+          <p class="footer-meta">BE 0435.618.757</p>
+          <div class="footer-divider"></div>
+          <p class="footer-meta footer-meta--muted">
+            Made by Jawed, Franca &amp; Sara<br><span style="white-space:nowrap">*ੈ✩‧₊˚༺☆༻*ੈ✩‧₊˚</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-mascot">
+      <img src="assets/images/mascot-nobg.webp" alt="mascot" class="mascot-gif">
+    </div>
+  </footer>
+
+</body>
+</html>
